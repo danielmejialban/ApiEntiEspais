@@ -45,10 +45,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -129,6 +136,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivitatsConcedides.cs">
+      <DependentUpon>ModelEntiEspais.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ActivitatsDemanades.cs">
+      <DependentUpon>ModelEntiEspais.tt</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -161,12 +174,97 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Categoria.cs">
+      <DependentUpon>ModelEntiEspais.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CategoriaEdat.cs">
+      <DependentUpon>ModelEntiEspais.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Competicio.cs">
+      <DependentUpon>ModelEntiEspais.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\ActivitatsConcedidesController.cs" />
+    <Compile Include="Controllers\ActivitatsDemanadesController.cs" />
+    <Compile Include="Controllers\CategoriaEdatsController.cs" />
+    <Compile Include="Controllers\CategoriasController.cs" />
+    <Compile Include="Controllers\CompeticiosController.cs" />
+    <Compile Include="Controllers\DiasController.cs" />
+    <Compile Include="Controllers\DuradasController.cs" />
+    <Compile Include="Controllers\EntitatsController.cs" />
+    <Compile Include="Controllers\EquipsController.cs" />
+    <Compile Include="Controllers\EspaisController.cs" />
+    <Compile Include="Controllers\EsportsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HorarisController.cs" />
+    <Compile Include="Controllers\Horari_activitatController.cs" />
+    <Compile Include="Controllers\Horari_ActivitatDemandaController.cs" />
+    <Compile Include="Controllers\Horari_Instal_lacioController.cs" />
+    <Compile Include="Controllers\Instal_lacioController.cs" />
+    <Compile Include="Controllers\SexesController.cs" />
+    <Compile Include="Controllers\TelefonsController.cs" />
+    <Compile Include="Controllers\UsuarisController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Dia.cs">
+      <DependentUpon>ModelEntiEspais.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Durada.cs">
+      <DependentUpon>ModelEntiEspais.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entitat.cs">
+      <DependentUpon>ModelEntiEspais.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Equip.cs">
+      <DependentUpon>ModelEntiEspais.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Espai.cs">
+      <DependentUpon>ModelEntiEspais.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Esport.cs">
+      <DependentUpon>ModelEntiEspais.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Horari.cs">
+      <DependentUpon>ModelEntiEspais.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Horari_activitat.cs">
+      <DependentUpon>ModelEntiEspais.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Horari_ActivitatDemanda.cs">
+      <DependentUpon>ModelEntiEspais.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Horari_Instal_lacio.cs">
+      <DependentUpon>ModelEntiEspais.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Instal_lacio.cs">
+      <DependentUpon>ModelEntiEspais.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelEntiEspais.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelEntiEspais.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelEntiEspais.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelEntiEspais.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelEntiEspais.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelEntiEspais.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sexe.cs">
+      <DependentUpon>ModelEntiEspais.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Telefon.cs">
+      <DependentUpon>ModelEntiEspais.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Usuaris.cs">
+      <DependentUpon>ModelEntiEspais.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -177,6 +275,16 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="ModelEntiEspais.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelEntiEspais.edmx</DependentUpon>
+      <LastGenOutput>ModelEntiEspais.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="ModelEntiEspais.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelEntiEspais.edmx</DependentUpon>
+      <LastGenOutput>ModelEntiEspais.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -198,6 +306,13 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <EntityDeploy Include="ModelEntiEspais.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelEntiEspais.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="ModelEntiEspais.edmx.diagram">
+      <DependentUpon>ModelEntiEspais.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -251,6 +366,9 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
