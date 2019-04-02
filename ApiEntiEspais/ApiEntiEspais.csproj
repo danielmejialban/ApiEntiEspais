@@ -265,6 +265,7 @@
     <Compile Include="Usuaris.cs">
       <DependentUpon>ModelEntiEspais.tt</DependentUpon>
     </Compile>
+    <Compile Include="Utilidades\Utilidades.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />

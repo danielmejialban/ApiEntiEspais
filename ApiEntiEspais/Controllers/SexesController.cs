@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -12,6 +13,7 @@ using ApiEntiEspais;
 
 namespace ApiEntiEspais.Controllers
 {
+    //CONTROL DE ERROR AÑADIDO
     public class SexesController : ApiController
     {
         private EntiespaisEntities1 db = new EntiespaisEntities1();
@@ -39,6 +41,7 @@ namespace ApiEntiEspais.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutSexe(int id, Sexe sexe)
         {
+            String mensaje = "";
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -55,16 +58,13 @@ namespace ApiEntiEspais.Controllers
             {
                 db.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
-                if (!SexeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                //Modificamos nuestra Exception con nuestro método de la clase estatica Utilidades para 
+                //tener feedback con el usuario y que este sepa cuál es el error;
+                SqlException sqlException = (SqlException)ex.InnerException.InnerException;
+                mensaje = Utilidades.Utilidades.MensajeError(sqlException);
+
             }
 
             return StatusCode(HttpStatusCode.NoContent);
@@ -74,21 +74,34 @@ namespace ApiEntiEspais.Controllers
         [ResponseType(typeof(Sexe))]
         public IHttpActionResult PostSexe(Sexe sexe)
         {
+            String mensaje = "";
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
             db.Sexe.Add(sexe);
-            db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = sexe.id }, sexe);
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                //Modificamos nuestra Exception con nuestro método de la clase estatica Utilidades para 
+                //tener feedback con el usuario y que este sepa cuál es el error;
+                SqlException sqlException = (SqlException)ex.InnerException.InnerException;
+                mensaje = Utilidades.Utilidades.MensajeError(sqlException);
+
+            }
+            return BadRequest(mensaje);
         }
 
         // DELETE: api/Sexes/5
         [ResponseType(typeof(Sexe))]
         public IHttpActionResult DeleteSexe(int id)
         {
+            String mensaje = "";
             Sexe sexe = db.Sexe.Find(id);
             if (sexe == null)
             {
@@ -96,9 +109,19 @@ namespace ApiEntiEspais.Controllers
             }
 
             db.Sexe.Remove(sexe);
-            db.SaveChanges();
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                //Modificamos nuestra Exception con nuestro método de la clase estatica Utilidades para 
+                //tener feedback con el usuario y que este sepa cuál es el error;
+                SqlException sqlException = (SqlException)ex.InnerException.InnerException;
+                mensaje = Utilidades.Utilidades.MensajeError(sqlException);
 
-            return Ok(sexe);
+            }
+            return BadRequest(mensaje);
         }
 
         protected override void Dispose(bool disposing)

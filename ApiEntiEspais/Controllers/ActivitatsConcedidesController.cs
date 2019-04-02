@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -12,6 +13,7 @@ using ApiEntiEspais;
 
 namespace ApiEntiEspais.Controllers
 {
+    //CONTROL ERRORES AÑADIDOS.
     public class ActivitatsConcedidesController : ApiController
     {
         private EntiespaisEntities1 db = new EntiespaisEntities1();
@@ -39,6 +41,8 @@ namespace ApiEntiEspais.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutActivitatsConcedides(int id, ActivitatsConcedides activitatsConcedides)
         {
+            String mensaje = "";
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -55,18 +59,15 @@ namespace ApiEntiEspais.Controllers
             {
                 db.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException)
+           
+            catch (DbUpdateConcurrencyException ex)
             {
-                if (!ActivitatsConcedidesExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                //Modificamos nuestra Exception con nuestro método de la clase estatica Utilidades para 
+                //tener feedback con el usuario y que este sepa cuál es el error;
+                SqlException sqlException = (SqlException)ex.InnerException.InnerException;
+                mensaje = Utilidades.Utilidades.MensajeError(sqlException);
 
+            }
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -74,21 +75,33 @@ namespace ApiEntiEspais.Controllers
         [ResponseType(typeof(ActivitatsConcedides))]
         public IHttpActionResult PostActivitatsConcedides(ActivitatsConcedides activitatsConcedides)
         {
+            String mensaje = "";
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
             db.ActivitatsConcedides.Add(activitatsConcedides);
-            db.SaveChanges();
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                //Modificamos nuestra Exception con nuestro método de la clase estatica Utilidades para 
+                //tener feedback con el usuario y que este sepa cuál es el error;
+                SqlException sqlException = (SqlException)ex.InnerException.InnerException;
+                mensaje = Utilidades.Utilidades.MensajeError(sqlException);
 
-            return CreatedAtRoute("DefaultApi", new { id = activitatsConcedides.id }, activitatsConcedides);
+            }
+            return BadRequest(mensaje);
         }
 
         // DELETE: api/ActivitatsConcedides/5
         [ResponseType(typeof(ActivitatsConcedides))]
         public IHttpActionResult DeleteActivitatsConcedides(int id)
         {
+            String mensaje = "";
             ActivitatsConcedides activitatsConcedides = db.ActivitatsConcedides.Find(id);
             if (activitatsConcedides == null)
             {
@@ -96,9 +109,20 @@ namespace ApiEntiEspais.Controllers
             }
 
             db.ActivitatsConcedides.Remove(activitatsConcedides);
-            db.SaveChanges();
 
-            return Ok(activitatsConcedides);
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                //Modificamos nuestra Exception con nuestro método de la clase estatica Utilidades para 
+                //tener feedback con el usuario y que este sepa cuál es el error;
+                SqlException sqlException = (SqlException)ex.InnerException.InnerException;
+                mensaje = Utilidades.Utilidades.MensajeError(sqlException);
+
+            }
+            return BadRequest(mensaje);
         }
 
         protected override void Dispose(bool disposing)

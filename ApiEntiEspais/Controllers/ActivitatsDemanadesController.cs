@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -12,6 +13,7 @@ using ApiEntiEspais;
 
 namespace ApiEntiEspais.Controllers
 {
+    //CONTROL DE ERRORES AÑADIDO
     public class ActivitatsDemanadesController : ApiController
     {
         private EntiespaisEntities1 db = new EntiespaisEntities1();
@@ -39,6 +41,7 @@ namespace ApiEntiEspais.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutActivitatsDemanades(int id, ActivitatsDemanades activitatsDemanades)
         {
+            String mensaje = "";
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -55,18 +58,14 @@ namespace ApiEntiEspais.Controllers
             {
                 db.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
-                if (!ActivitatsDemanadesExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                //Modificamos nuestra Exception con nuestro método de la clase estatica Utilidades para 
+                //tener feedback con el usuario y que este sepa cuál es el error;
+                SqlException sqlException = (SqlException)ex.InnerException.InnerException;
+                mensaje = Utilidades.Utilidades.MensajeError(sqlException);
 
+            }
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -74,21 +73,33 @@ namespace ApiEntiEspais.Controllers
         [ResponseType(typeof(ActivitatsDemanades))]
         public IHttpActionResult PostActivitatsDemanades(ActivitatsDemanades activitatsDemanades)
         {
+            String mensaje = "";
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
             db.ActivitatsDemanades.Add(activitatsDemanades);
-            db.SaveChanges();
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                //Modificamos nuestra Exception con nuestro método de la clase estatica Utilidades para 
+                //tener feedback con el usuario y que este sepa cuál es el error;
+                SqlException sqlException = (SqlException)ex.InnerException.InnerException;
+                 mensaje = Utilidades.Utilidades.MensajeError(sqlException);
 
-            return CreatedAtRoute("DefaultApi", new { id = activitatsDemanades.id }, activitatsDemanades);
+            }
+            return BadRequest(mensaje);
         }
 
         // DELETE: api/ActivitatsDemanades/5
         [ResponseType(typeof(ActivitatsDemanades))]
         public IHttpActionResult DeleteActivitatsDemanades(int id)
         {
+            String mensaje = "";
             ActivitatsDemanades activitatsDemanades = db.ActivitatsDemanades.Find(id);
             if (activitatsDemanades == null)
             {
@@ -96,9 +107,20 @@ namespace ApiEntiEspais.Controllers
             }
 
             db.ActivitatsDemanades.Remove(activitatsDemanades);
-            db.SaveChanges();
 
-            return Ok(activitatsDemanades);
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                //Modificamos nuestra Exception con nuestro método de la clase estatica Utilidades para 
+                //tener feedback con el usuario y que este sepa cuál es el error;
+                SqlException sqlException = (SqlException)ex.InnerException.InnerException;
+                mensaje = Utilidades.Utilidades.MensajeError(sqlException);
+
+            }
+            return BadRequest(mensaje);
         }
 
         protected override void Dispose(bool disposing)
